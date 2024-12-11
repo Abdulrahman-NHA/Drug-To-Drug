@@ -19,8 +19,8 @@ const getCookie = (name) => {
 };
 
 // Create an Axios instance
-const axiosInstance = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL, // Use environment variable
+const axiosInstance = axios.create({  
+  baseURL: 'https://ddi-backend.onrender.com',
   withCredentials: true, // Important for sending cookies
   headers: {
     'Content-Type': 'application/json',

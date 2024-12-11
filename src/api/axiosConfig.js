@@ -2,14 +2,13 @@
 
 import axios from 'axios';
 
-// Utility function to get CSRF token from cookies
 const getCookie = (name) => {
   let cookieValue = null;
   if (document.cookie && document.cookie !== "") {
     const cookies = document.cookie.split(";");
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i].trim();
-      if (cookie.substring(0, name.length + 1) === name + "=") {
+    for (let cookie of cookies) {
+      cookie = cookie.trim();
+      if (cookie.startsWith(name + "=")) {
         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
         break;
       }
@@ -18,16 +17,13 @@ const getCookie = (name) => {
   return cookieValue;
 };
 
-// Create an Axios instance
 const axiosInstance = axios.create({  
-  baseURL: 'https://ddi-backend.onrender.com/api/',  // Ensure '/api/' is included if applicable
-  withCredentials: true, // Important for sending cookies
+  baseURL: 'https://ddi-backend.onrender.com/api',  // Removed trailing slash
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
     'X-CSRFToken': getCookie('csrftoken'),
   },
 });
-
-// Optional: Set up Axios interceptors to refresh CSRF token or handle errors
 
 export default axiosInstance;

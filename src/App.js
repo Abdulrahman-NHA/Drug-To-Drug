@@ -1,136 +1,196 @@
-import React, { useState } from "react";
+// src/App.js
+
+import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from "react-router-dom";
+import axiosInstance from "./api/axiosConfig";
+import "./App.css";
+
 import Screen from "./components/Screen";
 import Header from "./components/Header";
+import DrugList from "./components/DrugList";
+import SelectedDrugs from "./components/SelectedDrugs";
+import InteractionResults from "./components/InteractionResults";
+import DrugDetail from "./components/DrugDetail";
 import Card from "./components/Card";
-import SmallCard from "./components/SmallCard";
+import Spinner from "./components/Spinner";
+import BarLoader from "./components/BarLoader";
+import SkeletonCard from "./components/SkeletonCard";
+import Modal from "./components/Modal";
+import PulseButton from "./components/PulseButton";
 import TitleText from "./components/TitleText";
-import Text from "./components/Text";
+
+const fetchInteractionsBetween = async (drugIds) => {
+  try {
+    const response = await axiosInstance.post("/get_interactions_between/", {
+      drug_ids: drugIds,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching interactions:", error);
+    return [];
+  }
+};
 
 const App = () => {
-  const [mockDrugs, setMockDrugs] = useState([
-    "Aspirin",
-    "Ibuprofen",
-    "Paracetamol",
-  ]);
+  const [drugs, setDrugs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedStateFilter, setSelectedStateFilter] = useState("");
+  const [ordering, setOrdering] = useState("name");
   const [selectedDrugs, setSelectedDrugs] = useState([]);
+  const [interactionResults, setInteractionResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
+  const fetchDrugs = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axiosInstance.get("/drugs/", {
+        params: {
+          search: searchTerm,
+          state: selectedStateFilter,
+          ordering: ordering,
+        },
+      });
+      setDrugs(response.data);
+    } catch (error) {
+      console.error("Error fetching drugs:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const addDrug = (drug) => {
-    if (!selectedDrugs.includes(drug)) {
+    if (!selectedDrugs.some((d) => d.drug_id === drug.drug_id)) {
       setSelectedDrugs([...selectedDrugs, drug]);
-      setMockDrugs(mockDrugs.filter((d) => d !== drug));
+      setDrugs(drugs.filter((d) => d.drug_id !== drug.drug_id));
     }
   };
 
   const removeDrug = (drug) => {
-    setSelectedDrugs(selectedDrugs.filter((d) => d !== drug));
-    setMockDrugs([...mockDrugs, drug]);
+    setSelectedDrugs(selectedDrugs.filter((d) => d.drug_id !== drug.drug_id));
+    setDrugs([...drugs, drug]);
   };
 
-  const filteredDrugs = mockDrugs.filter((drug) =>
-    drug.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
-  const interactionDetails = [
-    {
-      type: "Risk",
-      content:
-        "Interaction between Aspirin and Ibuprofen: Increased risk of gastrointestinal bleeding. It is recommended to monitor the patient closely and consider alternative medications.",
-    },
-    {
-      type: "Warning",
-      content:
-        "Interaction between Metformin and Lisinopril: Possible risk of lowering blood sugar levels. Monitor blood sugar levels regularly.",
-    },
-    {
-      type: "Safe",
-      content:
-        "No interaction between Paracetamol and Ibuprofen. Safe to use together.",
-    },
-  ];
+  const handleStateFilterChange = (e) => {
+    setSelectedStateFilter(e.target.value);
+  };
+
+  const handleOrderingChange = (e) => {
+    setOrdering(e.target.value);
+  };
+
+  useEffect(() => {
+    const setCsrfToken = async () => {
+      try {
+        await axiosInstance.get("/api/set_csrf/");
+      } catch (error) {
+        console.error("Error setting CSRF token:", error);
+      }
+    };
+    setCsrfToken();
+  }, []);
+
+  const checkInteractions = async () => {
+    const drugIds = selectedDrugs.map((d) => d.drug_id);
+    if (drugIds.length === 0) {
+      alert("Please select at least one drug to check interactions.");
+      return;
+    }
+    setIsLoading(true);
+    const interactions = await fetchInteractionsBetween(drugIds);
+    setInteractionResults(interactions);
+    setIsLoading(false);
+  };
 
   return (
-    <Screen>
-      {/* Header */}
-      <Header>
-        <TitleText text="InteractMeds" />
-      </Header>
+    <Router>
+      <Screen>
+        <Header />
 
-      {/* Search Input */}
-      <div className="search-container">
-        <input
-          className="input"
-          placeholder="Search for drugs"
-          value={searchTerm}
-          onChange={handleSearch}
-        />
-        <button className="search-button">Search</button>
-      </div>
-
-      {/* Main Content */}
-      <div className="main-content">
-        {/* Left Panel: Search Results */}
-        <div className="left-panel">
-          <Card>
-            <TitleText text="Search Results" />
-            {filteredDrugs.map((drug, index) => (
-              <SmallCard key={index}>
-                <Text text={drug} />
-                <button
-                  className="button-small add-button"
-                  onClick={() => addDrug(drug)}
-                >
-                  Add
-                </button>
-              </SmallCard>
-            ))}
-          </Card>
+        <div className="search-container">
+          <input
+            className="input"
+            placeholder="Search for drugs"
+            value={searchTerm}
+            onChange={handleSearch}
+          />
+          <select
+            className="dropdown"
+            onChange={handleStateFilterChange}
+            value={selectedStateFilter}
+          >
+            <option value="">All States</option>
+            <option value="Solid">Solid</option>
+            <option value="Liquid">Liquid</option>
+          </select>
+          <select
+            className="dropdown"
+            onChange={handleOrderingChange}
+            value={ordering}
+          >
+            <option value="name">Sort by Name</option>
+            <option value="average_mass">Sort by Average Mass</option>
+            <option value="-average_mass">Sort by Mass (Descending)</option>
+          </select>
+          <button className="search-button" onClick={fetchDrugs}>
+            Search
+          </button>
         </div>
 
-        {/* Right Panel: Selected Drugs */}
-        <div className="right-panel">
-          <Card>
-            <TitleText text="Selected Drugs" />
-            {selectedDrugs.map((drug, index) => (
-              <SmallCard key={index}>
-                <Text text={drug} />
-                <button
-                  className="button-small delete-button"
-                  onClick={() => removeDrug(drug)}
-                >
-                  Delete
-                </button>
-              </SmallCard>
-            ))}
-          </Card>
-        </div>
-      </div>
+        <div className="main-content">
+          {/* LEFT PANEL: Search Results and Interaction Results */}
+          <div className="left-panel">
+            {/* Search Results */}
+            {isLoading ? (
+              <Spinner />
+            ) : drugs.length === 0 ? (
+              <SkeletonCard />
+            ) : (
+              <Card>
+                <TitleText text="Search Results" />
+                <DrugList drugs={drugs} addDrug={addDrug} />
+              </Card>
+            )}
 
-      {/* Always Visible Check Interactions Button */}
-      <div className="interaction-button-container">
-        <button className="interaction-button">Check Interactions</button>
-      </div>
+            {/* Interaction Results */}
+            {isLoading ? (
+              <BarLoader />
+            ) : (
+              <Card>
+                <TitleText text="Interaction Results" />
+                <InteractionResults interactionResults={interactionResults} />
+              </Card>
+            )}
+          </div>
 
-      {/* Interaction Details */}
-      <Card>
-        <TitleText text="Interaction Details" />
-        <div className="interaction-details">
-          <div className="interaction-risk">
-            <Text text={interactionDetails[0].content} />
-          </div>
-          <div className="interaction-warning">
-            <Text text={interactionDetails[1].content} />
-          </div>
-          <div className="interaction-safe">
-            <Text text={interactionDetails[2].content} />
+          {/* RIGHT PANEL: Selected Drugs and Check Interactions */}
+          <div className="right-panel">
+            <Card>
+              <TitleText text="Selected Drugs" />
+              <SelectedDrugs selectedDrugs={selectedDrugs} removeDrug={removeDrug} />
+              <PulseButton onClick={checkInteractions}>Check Interactions</PulseButton>
+            </Card>
           </div>
         </div>
-      </Card>
-    </Screen>
+
+        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+          <h2 className="title-text">Modal Title</h2>
+          <p className="text">This is a retro-styled modal.</p>
+        </Modal>
+
+        <Routes>
+          <Route path="/drugs/:id" element={<DrugDetail />} />
+        </Routes>
+      </Screen>
+    </Router>
   );
 };
 

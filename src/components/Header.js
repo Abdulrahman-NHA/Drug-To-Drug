@@ -1,7 +1,15 @@
-import React from "react";
+// src/components/Header.js
 
-const Header = (props) => {
-  return <header>{props.children}</header>;
+import React from 'react';
+import TitleText from './TitleText';
+import '../App.css';
+
+const Header = () => {
+  return (
+    <header className="header">
+      <TitleText text="InteractMeds" />
+    </header>
+  );
 };
 
 export default Header;

@@ -1,7 +1,10 @@
-import React from "react";
+// src/components/TitleText.js
 
-const TitleText = (props) => {
-  return <div className="title-text">{props.text ?? "Default Title"}</div>;
+import React from 'react';
+import '../App.css';
+
+const TitleText = ({ text }) => {
+  return <h1 className="title-text">{text}</h1>;
 };
 
 export default TitleText;

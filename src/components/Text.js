@@ -1,7 +1,10 @@
-import React from "react";
+// src/components/Text.js
 
-const Text = (props) => {
-  return <div className="text">{props.text ?? "Default Text"}</div>;
+import React from 'react';
+import '../App.css';
+
+const Text = ({ text, className }) => {
+  return <p className={`text ${className}`}>{text}</p>;
 };
 
 export default Text;

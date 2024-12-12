@@ -16,11 +16,11 @@ const getCookie = (name) => {
 };
 
 const axiosInstance = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api',  // Use your local backend API URL
-  withCredentials: true, // Important for sending cookies
+  baseURL: process.env.REACT_APP_BACKEND_URL,
+  withCredentials: true,
   headers: {
-    'Content-Type': 'application/json',
-    'X-CSRFToken': getCookie('csrftoken'),
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCookie('csrftoken'),
   },
 });
 

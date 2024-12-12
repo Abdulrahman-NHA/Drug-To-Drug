@@ -15,12 +15,13 @@ const getCookie = (name) => {
   return cookieValue;
 };
 
+// Update baseURL to match your No-IP dynamic DNS hostname and API route
 const axiosInstance = axios.create({
-  baseURL: process.env.REACT_APP_BACKEND_URL,
-  withCredentials: true,
+  baseURL: "http://localhost:8000/api", // Use your No-IP hostname
+  withCredentials: true, // Enables cookies for CSRF
   headers: {
-      'Content-Type': 'application/json',
-      'X-CSRFToken': getCookie('csrftoken'),
+    'Content-Type': 'application/json',
+    'X-CSRFToken': getCookie('csrftoken'),
   },
 });
 

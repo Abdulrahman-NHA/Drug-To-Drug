@@ -1,5 +1,3 @@
-// src/App.js
-
 import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
@@ -90,7 +88,6 @@ const App = () => {
   useEffect(() => {
     const setCsrfToken = async () => {
       try {
-        // Corrected the endpoint to "/set_csrf/" since baseURL already includes "/api"
         await axiosInstance.get("/set_csrf/");
       } catch (error) {
         console.error("Error setting CSRF token:", error);
@@ -188,6 +185,7 @@ const App = () => {
         </Modal>
 
         <Routes>
+          <Route path="/" element={<div />} />
           <Route path="/drugs/:id" element={<DrugDetail />} />
         </Routes>
       </Screen>

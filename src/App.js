@@ -90,7 +90,8 @@ const App = () => {
   useEffect(() => {
     const setCsrfToken = async () => {
       try {
-        await axiosInstance.get("/api/set_csrf/");
+        // Corrected the endpoint to "/set_csrf/" since baseURL already includes "/api"
+        await axiosInstance.get("/set_csrf/");
       } catch (error) {
         console.error("Error setting CSRF token:", error);
       }

@@ -18,7 +18,7 @@ const getCookie = (name) => {
 };
 
 const axiosInstance = axios.create({
-  baseURL: 'https://ddi-backend.onrender.com',  // No trailing slash
+  baseURL: 'https://ddi-backend.onrender.com/api',  // Ensure this is your backend API URL with /api
   withCredentials: true, // Important for sending cookies
   headers: {
     'Content-Type': 'application/json',

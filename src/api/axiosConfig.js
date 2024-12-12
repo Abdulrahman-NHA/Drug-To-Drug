@@ -1,5 +1,3 @@
-// src/api/axiosConfig.js
-
 import axios from 'axios';
 
 const getCookie = (name) => {
@@ -18,7 +16,7 @@ const getCookie = (name) => {
 };
 
 const axiosInstance = axios.create({
-  baseURL: 'https://ddi-backend.onrender.com/api',  // Ensure this is your backend API URL with /api
+  baseURL: 'http://127.0.0.1:8000/api',  // Use your local backend API URL
   withCredentials: true, // Important for sending cookies
   headers: {
     'Content-Type': 'application/json',

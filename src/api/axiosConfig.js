@@ -1,12 +1,12 @@
-import axios from 'axios';
+import axios from "axios";
 
 const getCookie = (name) => {
   let cookieValue = null;
-  if (document.cookie && document.cookie !== "") {
+  if (document.cookie) {
     const cookies = document.cookie.split(";");
     for (let cookie of cookies) {
       cookie = cookie.trim();
-      if (cookie.startsWith(name + "=")) {
+      if (cookie.startsWith(`${name}=`)) {
         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
         break;
       }
@@ -15,14 +15,13 @@ const getCookie = (name) => {
   return cookieValue;
 };
 
-// Update baseURL to match your No-IP dynamic DNS hostname and API route
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:8000/api", // Use your No-IP hostname
-  withCredentials: true, // Enables cookies for CSRF
+  baseURL: "http://66.118.132.73:8000/api",  // Replace with your No-IP address
+  withCredentials: true, 
   headers: {
-    'Content-Type': 'application/json',
-    'X-CSRFToken': getCookie('csrftoken'),
+    "Content-Type": "application/json",
   },
 });
+
 
 export default axiosInstance;

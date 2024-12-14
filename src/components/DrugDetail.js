@@ -1,5 +1,3 @@
-// src/components/DrugDetail.js
-
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Screen from './Screen';
@@ -11,12 +9,12 @@ import Spinner from './Spinner';
 
 const fetchDrugInteractions = async (drugId) => {
   try {
-    const response = await axiosInstance.post("/get_drug_interactions/", {
+    const response = await axiosInstance.post('/get_drug_interactions/', {
       drug_id: drugId,
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching drug interactions:", error);
+    console.error('Error fetching drug interactions:', error);
     return [];
   }
 };
@@ -34,7 +32,7 @@ const DrugDetail = () => {
         const interactions = await fetchDrugInteractions(drugData.drug_id);
         setDrug({ ...drugData, interactions });
       } catch (error) {
-        console.error("Error fetching drug details:", error);
+        console.error('Error fetching drug details:', error);
       } finally {
         setIsLoading(false);
       }
@@ -64,7 +62,7 @@ const DrugDetail = () => {
             drug.interactions.map((interaction, index) => (
               <li key={index}>
                 <strong>{interaction.interaction_drug_name}:</strong> {interaction.description}
-                {interaction.inferred && " (Inferred)"}
+                {interaction.inferred && ' (Inferred)'}
                 {interaction.confidence_score && ` [Confidence: ${interaction.confidence_score}]`}
               </li>
             ))

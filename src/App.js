@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import axiosInstance from "./api/axiosConfig";
 import "./App.css";
 
@@ -88,8 +84,8 @@ const App = () => {
   useEffect(() => {
     const setCsrfToken = async () => {
       try {
-        // Corrected the endpoint to "/set_csrf/" since baseURL already includes "/api"
-        await axiosInstance.get("/set_csrf/");
+        // Set the CSRF token for the session
+        await axiosInstance.get("set_csrf/");
       } catch (error) {
         console.error("Error setting CSRF token:", error);
       }
@@ -145,9 +141,7 @@ const App = () => {
         </div>
 
         <div className="main-content">
-          {/* LEFT PANEL: Search Results and Interaction Results */}
           <div className="left-panel">
-            {/* Search Results */}
             {isLoading ? (
               <Spinner />
             ) : drugs.length === 0 ? (
@@ -159,7 +153,6 @@ const App = () => {
               </Card>
             )}
 
-            {/* Interaction Results */}
             {isLoading ? (
               <BarLoader />
             ) : (
@@ -170,12 +163,16 @@ const App = () => {
             )}
           </div>
 
-          {/* RIGHT PANEL: Selected Drugs and Check Interactions */}
           <div className="right-panel">
             <Card>
               <TitleText text="Selected Drugs" />
-              <SelectedDrugs selectedDrugs={selectedDrugs} removeDrug={removeDrug} />
-              <PulseButton onClick={checkInteractions}>Check Interactions</PulseButton>
+              <SelectedDrugs
+                selectedDrugs={selectedDrugs}
+                removeDrug={removeDrug}
+              />
+              <PulseButton onClick={checkInteractions}>
+                Check Interactions
+              </PulseButton>
             </Card>
           </div>
         </div>
@@ -186,6 +183,7 @@ const App = () => {
         </Modal>
 
         <Routes>
+          <Route path="/" element={<div>Welcome to the Drug Interaction App</div>} />
           <Route path="/drugs/:id" element={<DrugDetail />} />
         </Routes>
       </Screen>

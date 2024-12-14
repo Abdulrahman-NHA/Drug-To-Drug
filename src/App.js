@@ -81,17 +81,7 @@ const App = () => {
     setOrdering(e.target.value);
   };
 
-  useEffect(() => {
-    const setCsrfToken = async () => {
-      try {
-        // Set the CSRF token for the session
-        await axiosInstance.get("set_csrf/");
-      } catch (error) {
-        console.error("Error setting CSRF token:", error);
-      }
-    };
-    setCsrfToken();
-  }, []); // <--- Remove this entire effect or the setCsrfToken call if not needed
+  // Removed the useEffect that called set_csrf here
 
   const checkInteractions = async () => {
     const drugIds = selectedDrugs.map((d) => d.drug_id);

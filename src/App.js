@@ -91,7 +91,7 @@ const App = () => {
       }
     };
     setCsrfToken();
-  }, []);
+  }, []); // <--- Remove this entire effect or the setCsrfToken call if not needed
 
   const checkInteractions = async () => {
     const drugIds = selectedDrugs.map((d) => d.drug_id);

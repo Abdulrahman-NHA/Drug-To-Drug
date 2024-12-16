@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import axiosInstance from "./api/axiosConfig";
 import "./App.css";
@@ -19,12 +19,13 @@ import TitleText from "./components/TitleText";
 
 const fetchInteractionsBetween = async (drugIds) => {
   try {
-    const response = await axiosInstance.post("/get_interactions_between/", {
+    const response = await axiosInstance.post("/api/get_interactions_between/", {
       drug_ids: drugIds,
     });
     return response.data;
   } catch (error) {
     console.error("Error fetching interactions:", error);
+    alert("Failed to fetch interactions. Please try again later.");
     return [];
   }
 };
@@ -42,16 +43,19 @@ const App = () => {
   const fetchDrugs = async () => {
     setIsLoading(true);
     try {
-      const response = await axiosInstance.get("/drugs/", {
-        params: {
-          search: searchTerm,
-          state: selectedStateFilter,
-          ordering: ordering,
-        },
-      });
+      const params = {
+        search: searchTerm,
+        ordering: ordering,
+      };
+      if (selectedStateFilter) {
+        params.state = selectedStateFilter;
+      }
+
+      const response = await axiosInstance.get("/api/drugs/", { params });
       setDrugs(response.data);
     } catch (error) {
       console.error("Error fetching drugs:", error);
+      alert("Failed to fetch drugs. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -81,12 +85,10 @@ const App = () => {
     setOrdering(e.target.value);
   };
 
-  // Removed the useEffect that called set_csrf here
-
   const checkInteractions = async () => {
     const drugIds = selectedDrugs.map((d) => d.drug_id);
-    if (drugIds.length === 0) {
-      alert("Please select at least one drug to check interactions.");
+    if (drugIds.length < 2) {
+      alert("Please select at least two drugs to check interactions.");
       return;
     }
     setIsLoading(true);

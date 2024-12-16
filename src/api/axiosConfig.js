@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const baseURL = process.env.REACT_APP_API_BASE_URL || 'https://ddrug-interaction-eb3a91a13ab1.herokuapp.com';
+const baseURL = process.env.REACT_APP_API_BASE_URL || "https://ddrug-intteraction-e80de02fc9c1.herokuapp.com/api";
 
 const axiosInstance = axios.create({
-  baseURL: `${baseURL}/api/`,
+  baseURL,  // Use baseURL directly
   headers: {
     'Content-Type': 'application/json',
   },

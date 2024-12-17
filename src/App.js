@@ -8,7 +8,6 @@ import Header from "./components/Header";
 import DrugList from "./components/DrugList";
 import SelectedDrugs from "./components/SelectedDrugs";
 import InteractionResults from "./components/InteractionResults";
-import DrugDetail from "./components/DrugDetail";
 import Card from "./components/Card";
 import Spinner from "./components/Spinner";
 import BarLoader from "./components/BarLoader";
@@ -38,7 +37,7 @@ const App = () => {
   const [selectedDrugs, setSelectedDrugs] = useState([]);
   const [interactionResults, setInteractionResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [drugDetails, setDrugDetails] = useState(null);
 
   const fetchDrugs = async () => {
     setIsLoading(true);
@@ -56,6 +55,19 @@ const App = () => {
     } catch (error) {
       console.error("Error fetching drugs:", error);
       alert("Failed to fetch drugs. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchDrugDetails = async (drugId) => {
+    setIsLoading(true);
+    try {
+      const response = await axiosInstance.get(`/api/drugs/${drugId}/`);
+      setDrugDetails(response.data);
+    } catch (error) {
+      console.error("Error fetching drug details:", error);
+      alert("Failed to fetch drug details. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -141,18 +153,33 @@ const App = () => {
             ) : (
               <Card>
                 <TitleText text="Search Results" />
-                <DrugList drugs={drugs} addDrug={addDrug} />
+                <DrugList
+                  drugs={drugs}
+                  addDrug={addDrug}
+                  showDetails={fetchDrugDetails}
+                />
               </Card>
             )}
 
-            {isLoading ? (
-              <BarLoader />
-            ) : (
-              <Card>
-                <TitleText text="Interaction Results" />
-                <InteractionResults interactionResults={interactionResults} />
-              </Card>
-            )}
+            <Card>
+              <TitleText text="Interaction Results" />
+              {drugDetails ? (
+                <div>
+                  <h3>{drugDetails.drug_name}</h3>
+                  <p>{drugDetails.description}</p>
+                  <ul>
+                    {drugDetails.interactions.map((interaction) => (
+                      <li key={interaction.drug_id}>
+                        <strong>{interaction.drug_name}:</strong>{" "}
+                        {interaction.description}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : (
+                <p>Drug not found.</p>
+              )}
+            </Card>
           </div>
 
           <div className="right-panel">
@@ -168,16 +195,6 @@ const App = () => {
             </Card>
           </div>
         </div>
-
-        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-          <h2 className="title-text">Modal Title</h2>
-          <p className="text">This is a retro-styled modal.</p>
-        </Modal>
-
-        <Routes>
-          <Route path="/" element={<div>Welcome to the Drug Interaction App</div>} />
-          <Route path="/drugs/:id" element={<DrugDetail />} />
-        </Routes>
       </Screen>
     </Router>
   );

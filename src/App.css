@@ -1,6 +1,6 @@
 /* src/App.css */
 
-/* Pharmacy Classic Theme */
+/* Pharmacy Classic Theme (Enhanced) */
 
 * {
   box-sizing: border-box;
@@ -86,6 +86,7 @@ body {
   color: #ffffff;
   font-size: 14px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .search-button:hover {
@@ -101,6 +102,22 @@ body {
 .left-panel,
 .right-panel {
   flex: 1;
+}
+
+/* Scrollable Search Results */
+.search-results-scrollable {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+/* Hover effect on drug names in search results */
+.drug-list ul li:hover {
+  background-color: #e6f2e6;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 /* Card Styles */
@@ -132,6 +149,7 @@ body {
   font-size: 14px;
   cursor: pointer;
   color: #ffffff;
+  transition: background-color 0.3s;
 }
 
 .button-small {
@@ -183,7 +201,49 @@ body {
   color: #333333;
 }
 
-/* Loaders (No idle animations) */
+/* Section headings in details */
+.section-heading {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #2e8b57;
+  margin-top: 10px;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #006400;
+  margin-bottom: 15px;
+}
+
+/* Drug Details Container (Full Width) */
+.drug-details-container {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.drug-details-content {
+  width: 100%;
+  line-height: 1.8;
+}
+
+.drug-details-content dl dt {
+  font-weight: bold;
+  color: #2e8b57;
+  margin-top: 10px;
+}
+
+.drug-details-content dl dd {
+  margin-bottom: 10px;
+}
+
+/* Hover effects on Drug Details fields */
+.drug-details-content dl dt:hover {
+  text-decoration: underline;
+  cursor: default;
+}
+
+/* Loaders */
 .spinner {
   border: 4px solid #e0e0e0;
   border-top: 4px solid #2e8b57;
@@ -191,6 +251,11 @@ body {
   width: 40px;
   height: 40px;
   margin: auto;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
 }
 
 .spinner-container {
@@ -215,7 +280,7 @@ body {
   background-color: #2e8b57;
 }
 
-/* Skeleton (No animations) */
+/* Skeleton */
 .skeleton {
   background-color: #e0e0e0;
   border-radius: 4px;
@@ -246,6 +311,7 @@ body {
   align-items: center;
   opacity: 0;
   visibility: hidden;
+  transition: opacity 0.3s;
 }
 
 .modal-content {
@@ -271,6 +337,20 @@ body {
   font-size: 24px;
   cursor: pointer;
   color: #2e8b57;
+}
+
+.close-button:hover {
+  color: #276f46;
+}
+
+/* Interactive Hover Effects */
+.drug-list ul li {
+  padding: 5px 0;
+}
+
+.drug-list ul li .drug-name:hover {
+  color: #2e8b57;
+  text-decoration: underline;
 }
 
 /* Responsive */

@@ -1,9 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import Card from './Card';
-import Text from './Text';
+import React from "react";
+import Card from "./Card";
+import Text from "./Text";
 
-const DrugList = ({ drugs, addDrug }) => {
+const DrugList = ({ drugs, addDrug, showDetails }) => {
   return (
     <div className="drug-list">
       <Card>
@@ -15,10 +14,16 @@ const DrugList = ({ drugs, addDrug }) => {
               <li key={drug.drug_id} className="small-card">
                 <Text text={drug.name} className="drug-name" />
                 <div>
-                  <Link to={`/drugs/${drug.drug_id}`} className="button-small details-button">
+                  <button
+                    className="button-small details-button"
+                    onClick={() => showDetails(drug.drug_id)}
+                  >
                     Details
-                  </Link>
-                  <button className="button-small add-button" onClick={() => addDrug(drug)}>
+                  </button>
+                  <button
+                    className="button-small add-button"
+                    onClick={() => addDrug(drug)}
+                  >
                     Add
                   </button>
                 </div>

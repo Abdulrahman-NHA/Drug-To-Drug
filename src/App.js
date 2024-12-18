@@ -11,7 +11,6 @@ import InteractionResults from "./components/InteractionResults";
 import DrugDetail from "./components/DrugDetail";
 import Card from "./components/Card";
 import Spinner from "./components/Spinner";
-import BarLoader from "./components/BarLoader";
 import SkeletonCard from "./components/SkeletonCard";
 import Modal from "./components/Modal";
 import PulseButton from "./components/PulseButton";
@@ -182,7 +181,26 @@ const App = () => {
                 <TitleText text="Drug Details" />
                 <div>
                   <h3>{drugDetails.name}</h3>
-                  <p>{drugDetails.description}</p>
+                  <p><strong>Description:</strong> {drugDetails.description || "N/A"}</p>
+                  <dl>
+                    <dt>Drug ID</dt><dd>{drugDetails.drug_id}</dd>
+                    <dt>Synonyms</dt><dd>{drugDetails.synonyms || "N/A"}</dd>
+                    <dt>CAS Number</dt><dd>{drugDetails.cas_number || "N/A"}</dd>
+                    <dt>UNII</dt><dd>{drugDetails.unii || "N/A"}</dd>
+                    <dt>InChIKey</dt><dd>{drugDetails.inchikey || "N/A"}</dd>
+                    <dt>Average Mass</dt><dd>{drugDetails.average_mass || "N/A"}</dd>
+                    <dt>Monoisotopic Mass</dt><dd>{drugDetails.monoisotopic_mass || "N/A"}</dd>
+                    <dt>State</dt><dd>{drugDetails.state || "N/A"}</dd>
+                    <dt>Indication</dt><dd>{drugDetails.indication || "N/A"}</dd>
+                    <dt>Pharmacodynamics</dt><dd>{drugDetails.pharmacodynamics || "N/A"}</dd>
+                    <dt>Mechanism of Action</dt><dd>{drugDetails.mechanism_of_action || "N/A"}</dd>
+                    <dt>Absorption</dt><dd>{drugDetails.absorption || "N/A"}</dd>
+                    <dt>Protein Binding</dt><dd>{drugDetails.protein_binding || "N/A"}</dd>
+                    <dt>Metabolism</dt><dd>{drugDetails.metabolism || "N/A"}</dd>
+                    <dt>Route of Elimination</dt><dd>{drugDetails.route_of_elimination || "N/A"}</dd>
+                    <dt>Half Life</dt><dd>{drugDetails.half_life || "N/A"}</dd>
+                    <dt>Clearance</dt><dd>{drugDetails.clearance || "N/A"}</dd>
+                  </dl>
                 </div>
               </Card>
             )}

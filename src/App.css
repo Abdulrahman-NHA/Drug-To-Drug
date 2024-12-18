@@ -1,230 +1,199 @@
-/* src/App.css */
+/* Modern UI Theme Example */
 
-/* Pharmacy Classic Theme (Enhanced) */
-
-* {
-  box-sizing: border-box;
+body {
+  font-family: 'Roboto', sans-serif;
+  background: #fdfdfd;
+  color: #333;
   margin: 0;
   padding: 0;
 }
 
-body {
-  font-family: 'Georgia', serif;
-  background-color: #f2f9f2; /* Very pale green */
-  color: #333333;
-  min-height: 100vh;
-  line-height: 1.6;
-}
-
-/* Header */
 .header {
-  background-color: #2e8b57; /* Forest green */
-  color: #ffffff;
-  padding: 20px 40px;
+  background: linear-gradient(135deg, #64b687, #2e8b57);
+  color: #fff;
+  padding: 20px;
   text-align: center;
-  border-bottom: 2px solid #276f46;
-  border-radius: 8px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+  border-bottom: 5px solid #276f46;
 }
 
 .header .title-text {
-  font-size: 28px;
-  font-weight: bold;
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: 1px;
 }
 
-/* Container */
 .screen {
   padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* Search Container */
 .search-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 15px;
   margin-bottom: 30px;
-  justify-content: flex-start;
+  align-items: center;
 }
 
-.input {
-  flex: 2; /* Make the input take more space */
-  min-width: 200px;
+.input, .dropdown {
+  flex: 1;
+  min-width: 150px;
   padding: 10px;
-  border: 1px solid #cccccc;
-  border-radius: 4px;
-  background-color: #ffffff;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
   font-size: 16px;
-  color: #333333;
+  transition: border-color 0.2s;
 }
 
-.input:focus {
+.input:focus, .dropdown:focus {
   border-color: #2e8b57;
   outline: none;
-  box-shadow: none;
-}
-
-.dropdown {
-  padding: 10px;
-  border: 1px solid #cccccc;
-  border-radius: 4px;
-  background-color: #ffffff;
-  font-size: 16px;
-  color: #333333;
-}
-
-.dropdown:focus {
-  border-color: #2e8b57;
-  outline: none;
-  box-shadow: none;
 }
 
 .search-button {
-  padding: 10px 20px;
-  background-color: #2e8b57;
+  padding: 10px 25px;
+  background: #2e8b57;
+  border-radius: 6px;
   border: none;
-  border-radius: 4px;
-  color: #ffffff;
-  font-size: 14px;
+  color: #fff;
+  font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background 0.3s;
 }
 
 .search-button:hover {
-  background-color: #276f46;
+  background: #276f46;
 }
 
-/* Main Content */
 .main-content {
   display: flex;
   gap: 20px;
 }
 
-.left-panel,
-.right-panel {
+.left-panel, .right-panel {
   flex: 1;
 }
 
-/* Scrollable Search Results */
+.card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.title-text {
+  font-size: 20px;
+  color: #2e8b57;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+/* Scrollable section for search results */
 .search-results-scrollable {
   max-height: 300px;
   overflow-y: auto;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
   padding: 10px;
 }
 
-/* Hover effect on drug names in search results */
-.drug-list ul li:hover {
-  background-color: #e6f2e6;
-  cursor: pointer;
-  transition: background-color 0.3s;
+.drug-list ul {
+  list-style: none;
 }
 
-/* Card Styles */
-.card {
-  background-color: #ffffff;
-  border: 1px solid #cccccc;
-  border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 20px;
-}
-
-.small-card {
-  background-color: #ffffff;
-  border: 1px dashed #cccccc;
-  border-radius: 6px;
-  padding: 15px 20px;
-  margin-bottom: 15px;
+.drug-list li {
+  padding: 8px 0;
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
+  transition: background 0.2s;
+}
+
+.drug-list li:hover {
+  background: #f1faf1;
+}
+
+.drug-name {
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.drug-name:hover {
+  color: #2e8b57;
+  cursor: pointer;
 }
 
 /* Buttons */
-.button-small,
-.interaction-button {
-  padding: 8px 16px;
+.button-small {
+  background: #3c9f70;
+  color: #fff;
   border: none;
+  padding: 6px 10px;
   border-radius: 4px;
   font-size: 14px;
-  cursor: pointer;
-  color: #ffffff;
-  transition: background-color 0.3s;
-}
-
-.button-small {
-  background-color: #3c9f70; /* Slightly lighter green */
+  transition: background 0.3s;
 }
 
 .button-small:hover {
-  background-color: #357f5d;
+  background: #357f5d;
 }
 
 .add-button {
-  background-color: #66a09c; /* A muted sage */
-  margin-left: 10px;
+  background: #66a09c;
 }
 
 .add-button:hover {
-  background-color: #57807d;
+  background: #57807d;
 }
 
 .delete-button {
-  background-color: #8b2e2e; /* A reddish accent */
+  background: #8b2e2e;
 }
 
 .delete-button:hover {
-  background-color: #732626;
+  background: #732626;
 }
 
 .interaction-button {
-  background-color: #2e8b57;
+  background: #2e8b57;
   width: 100%;
+  padding: 14px;
+  color: #fff;
   font-size: 16px;
-  padding: 12px 20px;
+  border-radius: 6px;
+  border: none;
   margin-top: 10px;
+  transition: background 0.3s;
 }
 
 .interaction-button:hover {
-  background-color: #276f46;
+  background: #276f46;
 }
 
-/* Text */
-.title-text {
-  font-size: 24px;
-  color: #2e8b57;
-  margin-bottom: 10px;
-}
-
-.text {
-  font-size: 16px;
-  color: #333333;
-}
-
-/* Section headings in details */
-.section-heading {
-  font-weight: bold;
-  font-size: 1.1rem;
-  color: #2e8b57;
-  margin-top: 10px;
-}
-
-.section-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #006400;
-  margin-bottom: 15px;
-}
-
-/* Drug Details Container (Full Width) */
+/* Drug Details (full width) */
 .drug-details-container {
   width: 100%;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 .drug-details-content {
   width: 100%;
-  line-height: 1.8;
+  line-height: 1.7;
+}
+
+.drug-details-content h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #2e8b57;
+  font-weight: 600;
+}
+
+.drug-details-content p strong {
+  color: #276f46;
 }
 
 .drug-details-content dl dt {
@@ -237,65 +206,9 @@ body {
   margin-bottom: 10px;
 }
 
-/* Hover effects on Drug Details fields */
+/* Hover effect on dt */
 .drug-details-content dl dt:hover {
-  text-decoration: underline;
-  cursor: default;
-}
-
-/* Loaders */
-.spinner {
-  border: 4px solid #e0e0e0;
-  border-top: 4px solid #2e8b57;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  margin: auto;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  100% { transform: rotate(360deg); }
-}
-
-.spinner-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
-
-.bar-loader {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  width: 50px;
-  height: 30px;
-  margin: auto;
-}
-
-.bar {
-  width: 8px;
-  height: 100%;
-  background-color: #2e8b57;
-}
-
-/* Skeleton */
-.skeleton {
-  background-color: #e0e0e0;
-  border-radius: 4px;
-  margin-bottom: 10px;
-}
-
-.skeleton-text {
-  width: 80%;
-  height: 16px;
-}
-
-.skeleton-button {
-  width: 40%;
-  height: 24px;
-  margin-top: 10px;
+  text-shadow: 0 0 3px #2e8b57;
 }
 
 /* Modal */
@@ -305,71 +218,47 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0,0,0,0.3);
   display: flex;
   justify-content: center;
   align-items: center;
-  opacity: 0;
   visibility: hidden;
+  opacity: 0;
   transition: opacity 0.3s;
 }
 
-.modal-content {
-  background-color: #ffffff;
-  padding: 30px;
-  border-radius: 8px;
-  width: 80%;
-  max-width: 500px;
-  position: relative;
+.modal-overlay.active {
+  visibility: visible;
+  opacity: 1;
 }
 
-.modal-overlay.active {
-  opacity: 1;
-  visibility: visible;
+.modal-content {
+  background: #fff;
+  border-radius: 10px;
+  padding: 30px;
+  position: relative;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .close-button {
   position: absolute;
   top: 15px;
-  right: 20px;
+  right: 15px;
   background: none;
   border: none;
   font-size: 24px;
-  cursor: pointer;
   color: #2e8b57;
+  cursor: pointer;
 }
 
 .close-button:hover {
-  color: #276f46;
+  color: #1f5938;
 }
 
-/* Interactive Hover Effects */
-.drug-list ul li {
-  padding: 5px 0;
-}
-
-.drug-list ul li .drug-name:hover {
-  color: #2e8b57;
-  text-decoration: underline;
-}
-
-/* Responsive */
 @media (max-width: 768px) {
   .main-content {
     flex-direction: column;
-    align-items: stretch;
-  }
-
-  .interaction-button {
-    width: 100%;
-  }
-
-  .search-container {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .drug-list {
-    max-height: 300px;
   }
 }

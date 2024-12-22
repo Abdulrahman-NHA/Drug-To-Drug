@@ -75,9 +75,15 @@ const App = () => {
       return;
     }
     setIsLoading(true);
-    const interactions = await fetchInteractionsBetween(drugIds);
-    setInteractionResults(interactions);
-    setIsLoading(false);
+    try {
+      const response = await axiosInstance.post('/api/get_interactions_between/', { drug_ids: drugIds });
+      setInteractionResults(response.data);
+    } catch (error) {
+      console.error("Error fetching interactions:", error);
+      alert("Failed to fetch interactions. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

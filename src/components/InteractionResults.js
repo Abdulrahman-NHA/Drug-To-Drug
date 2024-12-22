@@ -1,29 +1,32 @@
-// src/components/InteractionResults.js
-
 import React from 'react';
-import Card from './Card';
-// Removed TitleText and any usage inside
-import Text from './Text';
 
 const InteractionResults = ({ interactionResults }) => {
   return (
-    <Card>
-      {/* Remove or comment out TitleText line if it existed inside the card */}
-      {/* <TitleText text="Interaction Results" /> */}
-      {interactionResults.length === 0 ? (
-        <p>No interactions found.</p>
+    <div className="interaction-results-container">
+      <h2>Interaction Results</h2>
+      {interactionResults.length > 0 ? (
+        <table className="interaction-results-table">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Severity</th>
+              <th>Inferred</th>
+            </tr>
+          </thead>
+          <tbody>
+            {interactionResults.map((result, index) => (
+              <tr key={index}>
+                <td>{result.description || 'N/A'}</td>
+                <td>{result.severity || 'N/A'}</td>
+                <td>{result.inferred ? 'Yes' : 'No'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       ) : (
-        <ul>
-          {interactionResults.map((interaction, index) => (
-            <li key={index}>
-              <strong>{interaction.interaction_drug_name}:</strong> {interaction.description}
-              {interaction.inferred && " (Inferred)"}
-              {interaction.confidence_score && ` [Confidence: ${interaction.confidence_score}]`}
-            </li>
-          ))}
-        </ul>
+        <p>No interactions found.</p>
       )}
-    </Card>
+    </div>
   );
 };
 

@@ -461,3 +461,30 @@ button:disabled {
   display: flex;
   gap: 10px;
 }
+/* Interaction Results Table */
+.interaction-results-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.interaction-results-table th,
+.interaction-results-table td {
+  border: 1px solid #cccccc;
+  padding: 10px;
+  text-align: left;
+}
+
+.interaction-results-table th {
+  background-color: #f2f9f2;
+  font-weight: bold;
+  color: #2e8b57;
+}
+
+.interaction-results-table td {
+  background-color: #ffffff;
+}
+
+.interaction-results-table tr:hover {
+  background-color: #e6f2e6;
+}

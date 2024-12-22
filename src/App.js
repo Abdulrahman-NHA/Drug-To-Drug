@@ -9,10 +9,7 @@ import DrugList from "./components/DrugList";
 import SelectedDrugs from "./components/SelectedDrugs";
 import InteractionResults from "./components/InteractionResults";
 import DrugDetail from "./components/DrugDetail";
-import Card from "./components/Card";
-import Spinner from "./components/Spinner";
-import SkeletonCard from "./components/SkeletonCard";
-import Modal from "./components/Modal";
+import DrugDetailPage from "./components/DrugDetailPage";
 import PulseButton from "./components/PulseButton";
 import TitleText from "./components/TitleText";
 
@@ -37,8 +34,6 @@ const App = () => {
   const [selectedDrugs, setSelectedDrugs] = useState([]);
   const [interactionResults, setInteractionResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [drugDetails, setDrugDetails] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchDrugs = async () => {
     setIsLoading(true);
@@ -61,19 +56,6 @@ const App = () => {
     }
   };
 
-  const fetchDrugDetails = async (drugId) => {
-    setIsLoading(true);
-    try {
-      const response = await axiosInstance.get(`/api/drugs/${drugId}/`);
-      setDrugDetails(response.data);
-    } catch (error) {
-      console.error("Error fetching drug details:", error);
-      alert("Failed to fetch drug details. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const addDrug = (drug) => {
     if (!selectedDrugs.some((d) => d.drug_id === drug.drug_id)) {
       setSelectedDrugs([...selectedDrugs, drug]);
@@ -84,18 +66,6 @@ const App = () => {
   const removeDrug = (drug) => {
     setSelectedDrugs(selectedDrugs.filter((d) => d.drug_id !== drug.drug_id));
     setDrugs([...drugs, drug]);
-  };
-
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
-  };
-
-  const handleStateFilterChange = (e) => {
-    setSelectedStateFilter(e.target.value);
-  };
-
-  const handleOrderingChange = (e) => {
-    setOrdering(e.target.value);
   };
 
   const checkInteractions = async () => {
@@ -121,11 +91,11 @@ const App = () => {
             className="input"
             placeholder="Search for drugs"
             value={searchTerm}
-            onChange={handleSearch}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
           <select
             className="dropdown"
-            onChange={handleStateFilterChange}
+            onChange={(e) => setSelectedStateFilter(e.target.value)}
             value={selectedStateFilter}
           >
             <option value="">All States</option>
@@ -134,7 +104,7 @@ const App = () => {
           </select>
           <select
             className="dropdown"
-            onChange={handleOrderingChange}
+            onChange={(e) => setOrdering(e.target.value)}
             value={ordering}
           >
             <option value="name">Sort by Name</option>
@@ -149,88 +119,44 @@ const App = () => {
         {/* Main Content */}
         <div className="main-content">
           <div className="left-panel">
-            {/* Drug Search Results */}
-            {isLoading ? (
-              <Spinner />
-            ) : drugs.length === 0 ? (
-              <SkeletonCard />
-            ) : (
-              <Card>
-                <TitleText text="Search Results" />
-                <DrugList
-                  drugs={drugs}
-                  addDrug={addDrug}
-                  showDetails={fetchDrugDetails}
-                />
-              </Card>
-            )}
-
-            {/* Interaction Results */}
-            <Card>
-              <TitleText text="Interaction Results" />
-              {interactionResults.length > 0 ? (
-                <InteractionResults interactionResults={interactionResults} />
-              ) : (
-                <p>No interactions found.</p>
-              )}
-            </Card>
-
-            {/* Drug Details */}
-            {drugDetails && (
-              <Card>
-                <TitleText text="Drug Details" />
-                <div>
-                  <h3>{drugDetails.name}</h3>
-                  <p><strong>Description:</strong> {drugDetails.description || "N/A"}</p>
-                  <dl>
-                    <dt>Drug ID</dt><dd>{drugDetails.drug_id}</dd>
-                    <dt>Synonyms</dt><dd>{drugDetails.synonyms || "N/A"}</dd>
-                    <dt>CAS Number</dt><dd>{drugDetails.cas_number || "N/A"}</dd>
-                    <dt>UNII</dt><dd>{drugDetails.unii || "N/A"}</dd>
-                    <dt>InChIKey</dt><dd>{drugDetails.inchikey || "N/A"}</dd>
-                    <dt>Average Mass</dt><dd>{drugDetails.average_mass || "N/A"}</dd>
-                    <dt>Monoisotopic Mass</dt><dd>{drugDetails.monoisotopic_mass || "N/A"}</dd>
-                    <dt>State</dt><dd>{drugDetails.state || "N/A"}</dd>
-                    <dt>Indication</dt><dd>{drugDetails.indication || "N/A"}</dd>
-                    <dt>Pharmacodynamics</dt><dd>{drugDetails.pharmacodynamics || "N/A"}</dd>
-                    <dt>Mechanism of Action</dt><dd>{drugDetails.mechanism_of_action || "N/A"}</dd>
-                    <dt>Absorption</dt><dd>{drugDetails.absorption || "N/A"}</dd>
-                    <dt>Protein Binding</dt><dd>{drugDetails.protein_binding || "N/A"}</dd>
-                    <dt>Metabolism</dt><dd>{drugDetails.metabolism || "N/A"}</dd>
-                    <dt>Route of Elimination</dt><dd>{drugDetails.route_of_elimination || "N/A"}</dd>
-                    <dt>Half Life</dt><dd>{drugDetails.half_life || "N/A"}</dd>
-                    <dt>Clearance</dt><dd>{drugDetails.clearance || "N/A"}</dd>
-                  </dl>
-                </div>
-              </Card>
-            )}
+            <div className="scrollable-container">
+              <TitleText text="Search Results" />
+              <DrugList
+                drugs={drugs}
+                addDrug={addDrug}
+                showDetails={(id) => (window.location.href = `/drug-details/${id}`)}
+              />
+            </div>
           </div>
-
-          {/* Selected Drugs */}
           <div className="right-panel">
-            <Card>
+            <div className="scrollable-container">
               <TitleText text="Selected Drugs" />
               <SelectedDrugs
                 selectedDrugs={selectedDrugs}
                 removeDrug={removeDrug}
               />
-              <PulseButton onClick={checkInteractions}>
-                Check Interactions
-              </PulseButton>
-            </Card>
+            </div>
+            <PulseButton onClick={checkInteractions}>
+              Check Interactions
+            </PulseButton>
           </div>
         </div>
 
-        {/* Modal */}
-        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-          <h2 className="title-text">Modal Title</h2>
-          <p className="text">This is a retro-styled modal.</p>
-        </Modal>
+        {/* Interaction Results Section */}
+        <div className="interaction-results-container">
+          <TitleText text="Interaction Results" />
+          {interactionResults.length > 0 ? (
+            <InteractionResults interactionResults={interactionResults} />
+          ) : (
+            <p>No interactions found.</p>
+          )}
+        </div>
 
         {/* Routes */}
         <Routes>
           <Route path="/" element={<div>Welcome to the Drug Interaction App</div>} />
           <Route path="/drugs/:id" element={<DrugDetail />} />
+          <Route path="/drug-details/:id" element={<DrugDetailPage />} />
         </Routes>
       </Screen>
     </Router>

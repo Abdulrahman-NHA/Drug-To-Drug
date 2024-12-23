@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import axiosInstance from "./api/axiosConfig";
 import "./App.css";
-
 import Screen from "./components/Screen";
 import Header from "./components/Header";
 import DrugList from "./components/DrugList";

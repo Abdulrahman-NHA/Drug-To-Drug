@@ -15,7 +15,7 @@ const DrugDetail = () => {
       try {
         setIsLoading(true);
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/drugs/details/${id}/`
+          `https://ddrug-intteraction-e80de02fc9c1.herokuapp.com/api/drugs/details/${id}/`
         );
         setDrugDetails(response.data);
         console.log("Drug Details Response:", response.data);
@@ -30,7 +30,7 @@ const DrugDetail = () => {
     const fetchGeneInteractions = async () => {
       try {
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/drugs/${id}/gene-interactions/`
+          `https://ddrug-intteraction-e80de02fc9c1.herokuapp.com/api/drugs/${id}/gene-interactions/`
         );
         setGeneInteractions(response.data);
         console.log("Gene Interactions Response:", response.data);

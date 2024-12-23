@@ -9,22 +9,8 @@ import DrugList from "./components/DrugList";
 import SelectedDrugs from "./components/SelectedDrugs";
 import InteractionResults from "./components/InteractionResults";
 import DrugDetail from "./components/DrugDetail";
-import DrugDetailPage from "./components/DrugDetailPage";
 import PulseButton from "./components/PulseButton";
 import TitleText from "./components/TitleText";
-
-const fetchInteractionsBetween = async (drugIds) => {
-  try {
-    const response = await axiosInstance.post("/api/get_interactions_between/", {
-      drug_ids: drugIds,
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching interactions:", error);
-    alert("Failed to fetch interactions. Please try again.");
-    return [];
-  }
-};
 
 const App = () => {
   const [drugs, setDrugs] = useState([]);
@@ -69,20 +55,21 @@ const App = () => {
   };
 
   const checkInteractions = async () => {
-    const drugIds = selectedDrugs.map((d) => d.drug_id);
-    if (drugIds.length < 2) {
-      alert("Please select at least two drugs to check interactions.");
+    const drugIds = selectedDrugs.map((d) => d.drug_id); // Collect selected drug IDs
+    if (drugIds.length !== 2) {
+      alert("Please select exactly two drugs to check interactions."); // Ensure only two drugs are selected
       return;
     }
-    setIsLoading(true);
+
+    setIsLoading(true); // Show loading spinner
     try {
       const response = await axiosInstance.post('/api/get_interactions_between/', { drug_ids: drugIds });
-      setInteractionResults(response.data);
+      setInteractionResults(response.data); // Update interaction results state
     } catch (error) {
-      console.error("Error fetching interactions:", error);
+      console.error("Error fetching interactions:", error); // Log the error
       alert("Failed to fetch interactions. Please try again.");
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Hide loading spinner
     }
   };
 
@@ -151,18 +138,36 @@ const App = () => {
         {/* Interaction Results Section */}
         <div className="interaction-results-container">
           <TitleText text="Interaction Results" />
-          {interactionResults.length > 0 ? (
-            <InteractionResults interactionResults={interactionResults} />
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : interactionResults.length > 0 ? (
+            <table className="interaction-results-table">
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th>Severity</th>
+                  <th>Inferred</th>
+                </tr>
+              </thead>
+              <tbody>
+                {interactionResults.map((interaction, index) => (
+                  <tr key={index}>
+                    <td>{interaction.description || "No description available."}</td>
+                    <td>{interaction.severity || "N/A"}</td>
+                    <td>{interaction.inferred ? "Yes" : "No"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           ) : (
-            <p>No interactions found.</p>
+            <p>No interactions found between the selected drugs.</p>
           )}
         </div>
 
         {/* Routes */}
         <Routes>
           <Route path="/" element={<div>Welcome to the Drug Interaction App</div>} />
-          <Route path="/drugs/:id" element={<DrugDetail />} />
-          <Route path="/drug-details/:id" element={<DrugDetailPage />} />
+          <Route path="/drug-details/:id" element={<DrugDetail />} />
         </Routes>
       </Screen>
     </Router>

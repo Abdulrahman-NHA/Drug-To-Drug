@@ -1,13 +1,11 @@
-// src/components/Header.js
-
-import React from 'react';
-import TitleText from './TitleText';
-import '../App.css';
+import React from "react";
+import "./Header.css";
 
 const Header = () => {
   return (
     <header className="header">
-      <TitleText text="InteractMeds" />
+      
+      <h1 className="header-title">KAU DDi</h1>
     </header>
   );
 };

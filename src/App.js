@@ -55,8 +55,8 @@ const App = () => {
 
   const checkInteractions = async () => {
     const drugIds = selectedDrugs.map((d) => d.drug_id); // Collect selected drug IDs
-    if (drugIds.length !== 2) {
-      alert("Please select exactly two drugs to check interactions."); // Ensure only two drugs are selected
+    if (drugIds.length <= 2) {
+      alert("Please select atleast two drugs to check interactions."); // Ensure only two drugs are selected
       return;
     }
 
